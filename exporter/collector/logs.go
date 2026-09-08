@@ -677,15 +677,8 @@ func (f *BoolOrString) UnmarshalJSON(data []byte) error {
 
 	var str string
 	if err := json.Unmarshal(data, &str); err == nil {
-		switch str {
-		case "true":
-			*f = true
-			return nil
-		case "false":
-			*f = false
-			return nil
-		}
-		return fmt.Errorf("failed to convert string to boolean: %w", err)
+		*f = str == "true"
+		return nil
 	}
 
 	return fmt.Errorf("field must be a JSON boolean or a string containing a boolean: %s", string(data))
